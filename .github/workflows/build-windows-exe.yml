@@ -1,0 +1,33 @@
+name: Build Windows EXE
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-exe:
+    name: Build Windows x64 EXE
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build EXE
+        run: npx pkg bin/cmd.js --targets node18-win-x64 --output dist/webtorrent-cli-windows.exe
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webtorrent-windows-x64
+          path: dist/webtorrent-cli-windows.exe
