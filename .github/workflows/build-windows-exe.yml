@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir -p dist
           cp bin/ascii-logo.txt dist/ascii-logo.txt
-          npx esbuild bin/cmd.js --bundle --platform=node --format=cjs --outfile=dist/webtorrent-cli-windows.cjs
+          npx esbuild bin/cmd.js --bundle --platform=node --format=cjs --outfile=dist/webtorrent-cli-windows.cjs --external:webrtc-polyfill
 
       - name: Update package.json Entrypoint
         run: |
