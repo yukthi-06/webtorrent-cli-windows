@@ -25,6 +25,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build CJS Bundle
+        run: |
+          mkdir -p dist
+          cp bin/ascii-logo.txt dist/ascii-logo.txt
+          npx esbuild bin/cmd.js --bundle --platform=node --format=cjs --outfile=dist/webtorrent-cli-windows.cjs --packages=external
+
+      - name: Update package.json Entrypoint
+        run: |
+          node -e "import('fs').then(fs => { const p = JSON.parse(fs.readFileSync('./package.json', 'utf8')); p.bin.webtorrent = './dist/webtorrent-cli-windows.cjs'; fs.writeFileSync('./package.json', JSON.stringify(p, null, 2)); })"
+
       - name: Build EXE
         run: npx pkg . --targets node18-win-x64 --output dist/webtorrent-cli-windows.exe
 
