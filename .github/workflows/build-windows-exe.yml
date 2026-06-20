@@ -35,11 +35,14 @@ jobs:
         run: |
           node -e "import('fs').then(fs => { const p = JSON.parse(fs.readFileSync('./package.json', 'utf8')); p.bin.webtorrent = './dist/webtorrent-cli-windows.cjs'; fs.writeFileSync('./package.json', JSON.stringify(p, null, 2)); })"
 
+      - name: Generate Timestamp
+        run: echo "TIMESTAMP=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+
       - name: Build EXE
-        run: npx pkg . --targets node18-win-x64 --output dist/webtorrent-cli-windows.exe
+        run: npx pkg . --targets node18-win-x64 --output dist/webtorrent-cli-windows-${{ env.TIMESTAMP }}.exe
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: webtorrent-windows-x64
-          path: dist/webtorrent-cli-windows.exe
+          path: dist/webtorrent-cli-windows-${{ env.TIMESTAMP }}.exe
