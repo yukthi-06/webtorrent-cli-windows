@@ -24,7 +24,7 @@ jobs:
         run: npm install
 
       - name: Build EXE
-        run: npx pkg bin/cmd.js --targets node18-win-x64 --output dist/webtorrent-cli-windows.exe
+        run: npx pkg . --targets node18-win-x64 --output dist/webtorrent-cli-windows.exe
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
